@@ -29,11 +29,13 @@
         <div class="well">
           <!-- ここから上を編集する必要はありません -->
 
+          <h3>管理者ログイン</h3>
+          <br>
           <form th:action="@{/administrator/login}" method="post">
             <div class="form-group">
-              <label for="mail_address">ユーザー名</label>
+              <label for="mail_address">メールアドレス</label>
               <input type="text" class="form-control" id="mailAddress" name="mailAddress"
-                placeholder="ユーザー名を入力してください" />
+                placeholder="メールアドレスを入力してください" />
             </div>
             <div class="form-group">
               <label for="password">パスワード</label>

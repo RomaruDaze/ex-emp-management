@@ -28,11 +28,9 @@
         <!-- 背景をグレーに、埋め込んだようなコンポーネント -->
         <div class="well">
           <!-- ここから上を編集する必要はありません -->
-
-          <h3>管理者情報</h3>
-          <p>番号：<span th:text="${session.admin.id}"></span></p>
-          <p>名前：<span th:text="${session.admin.name}"></span></p>
-          <hr>
+          <p class="navbar-text navbar-right">
+            <a href="../employee/list" class="navbar-link">戻る</a>
+          </p>
           <h3>管理者一覧</h3>
           <table class="table table-striped">
             <thead>

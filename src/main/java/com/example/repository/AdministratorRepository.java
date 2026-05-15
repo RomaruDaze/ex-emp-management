@@ -27,7 +27,7 @@ public class AdministratorRepository {
         return admin;
     };
 
-    public Administrator save(Administrator admin) {
+    public void save(Administrator admin) {
         System.out.println("RepositorySave");
         SqlParameterSource param = new BeanPropertySqlParameterSource(admin);
 
@@ -47,7 +47,6 @@ public class AdministratorRepository {
 
             template.update(updateSql, param);
         }
-        return null;
     }
 
     public Administrator findByMailAddressAndPassword(String mailAddress, String password) {

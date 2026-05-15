@@ -16,8 +16,8 @@ public class AdministratorService {
         return adminRepository.findByMailAddressAndPassword(mail_address, password);
     }
 
-    public Administrator save(Administrator admin) {
-        return adminRepository.save(admin);
+    public void save(Administrator admin) {
+        adminRepository.save(admin);
     }
 
     public List<Administrator> findAll() {

@@ -31,8 +31,9 @@ public class AdministratorController {
             return "administrator/login";
         }
         session.setAttribute("admin",admin);
-        return "redirect:insert";
+        return "redirect:../employee/list";
     }
+
 
     @GetMapping("insert")
     public String insertIndex(){
@@ -42,12 +43,16 @@ public class AdministratorController {
 
     @PostMapping("insert")
     public String insert(String name,String mailAddress,String password){
-        Administrator admin = new Administrator();
-        admin.setName(name);
-        admin.setMailAddress(mailAddress);
-        admin.setPassword(password);
-        adminService.save(admin);
-        return "redirect:insert";
+        if(name.isEmpty() || mailAddress.isEmpty() || password.isEmpty()){
+            return "administrator/insert";
+        }else {
+            Administrator admin = new Administrator();
+            admin.setName(name);
+            admin.setMailAddress(mailAddress);
+            admin.setPassword(password);
+            adminService.save(admin);
+            return "redirect:insert";
+        }
     }
 
 }

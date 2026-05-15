@@ -2,7 +2,9 @@ package com.example.repository;
 
 import com.example.domain.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -26,7 +28,7 @@ public class EmployeeRepository {
         employee.setZipCode(rs.getString("zip_code"));
         employee.setAddress(rs.getString("address"));
         employee.setTelephone(rs.getString("telephone"));
-        employee.setSalary(rs.getString("salary"));
+        employee.setSalary(rs.getInt("salary"));
         employee.setCharacteristics(rs.getString("characteristics"));
         employee.setDependentsCount(rs.getInt("dependents_count"));
         return employee;
@@ -41,33 +43,36 @@ public class EmployeeRepository {
     }
 
     public Employee findById(Integer id) {
-        System.out.println("RepositoryFindById");
-
         String sql = "SELECT * FROM employees WHERE id = :id";
         SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
-        return template.queryForObject(sql, param, ROW_MAPPER);
+        try {
+            return template.queryForObject(sql, param, ROW_MAPPER);
+        } catch (EmptyResultDataAccessException e) {
+            return null; // Return null so your Service/Controller can handle it gracefully
+        }
     }
+
 
     public void update(Employee employee) {
         System.out.println("RepositoryUpdate");
 
         String sql = "UPDATE employees " +
                 "SET " +
+                "id = :id, " +
                 "name=:name," +
                 "image=:image," +
                 "gender=:gender," +
-                "hire_date=:hire_date," +
-                "mail_address=:mail_address," +
-                "zip_code=:zip_code," +
+                "hire_date=:hireDate," +
+                "mail_address=:mailAddress," +
+                "zip_code=:zipCode," +
                 "address=:address," +
                 "telephone=:telephone," +
                 "salary=:salary," +
                 "characteristics=:characteristics," +
-                "dependents_count=:dependents_counts where id = :id";
+                "dependents_count=:dependentsCount where id = :id";
 
-        SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("name",employee.getName())
-                .addValue("id",employee.getId());
-        return template.queryForObject(sql, param, ROW_MAPPER);
+        SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
+        System.out.println(sql);
+        template.update(sql, param);
     }
 }
